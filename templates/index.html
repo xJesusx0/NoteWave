@@ -1,0 +1,27 @@
+{% extends "template.html" %}
+
+{% block set_style %}
+    <link rel="stylesheet" href="{{ url_for('static' , filename = 'css/style_index.css')}}">
+{% endblock %}
+
+{% block body %}
+    <div class="notes-container">
+        <h2>Agregar Nota</h2>
+        <form action="/" method="POST">
+            <input type="hidden" id="UserId" name="UserId" value="{{ Id }}" required autocomplete="off">
+            <div class="input-group">
+                <label for="Title">Título:</label>
+                <input type="text" id="Title" name="Title" maxlength="50" required autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label for="Content">Contenido:</label>
+                <textarea id="Content" name="Content" id="Content" required autocomplete="off"></textarea>
+            </div>
+            <button type="submit">Guardar Nota</button>
+        </form>
+    </div>
+    
+    
+    <a href="/logout">Logout</a>
+    
+{% endblock %}
