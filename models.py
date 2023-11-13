@@ -11,10 +11,10 @@ class Table():
         cursor = connection.cursor()
         return(connection,cursor)
     
-    def Add(self,UserData):
+    def Add(self,Data):
         connection,cursor = self.Connect()
         try:
-            cursor.execute(f"INSERT INTO {self.name}{self.columns} VALUES{self.placeholders};",UserData)
+            cursor.execute(f"INSERT INTO {self.name}{self.columns} VALUES{self.placeholders};",Data)
             connection.commit()
 
         except Exception as Error:
@@ -74,9 +74,28 @@ class Users(Table):
 
         finally:
             connection.close()
-        
+
+class Notes(Table):
+    def GetNotes(self,UserId):
+        connection,cursor = self.Connect()
+        try:
+            cursor.execute("SELECT * FROM notes WHERE UserId = ? ORDER BY date DESC",(UserId,))
+            return cursor.fetchall()
+            
+
+        except Exception as Error:
+            print("Error:", Error)
+            connection.rollback()
+
+        finally:
+            connection.close()
 
 
-UsersParameters = {"columns":('Id','UserName','UserPassword'),"placeholders":'(?,?,?)'}
+UsersParameters = {"columns":('Id','UserName','UserPassword'),
+                   "placeholders":'(?,?,?)'}
+
+NotesParameters = {"columns":('UserId','Title','Content'),
+                   "placeholders":'(?,?,?)'}
 
 TableUsers = Users("users",UsersParameters['columns'],UsersParameters['placeholders'])
+TableNotes = Notes("notes",NotesParameters["columns"],NotesParameters["placeholders"])

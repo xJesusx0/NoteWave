@@ -12,7 +12,18 @@ Session(app)
 def index():
     if not session.get("name"):
         return redirect("/login")
-    return render_template("index.html",Id = session["id"])
+    
+    UserId = session["id"]
+    Notes = TableNotes.GetNotes(UserId)
+
+    if request.method == "POST":     
+        Title = request.form.get("Title")
+        Content = request.form.get("Content")
+
+        TableNotes.Add((UserId,Title,Content))
+
+     
+    return render_template("index.html",notes = Notes)
 
 
 @app.route("/login", methods=["GET", "POST"])
