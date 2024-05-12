@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoteWave</title>
+    <link rel="stylesheet" href="{{ url_for( 'static' , filename = 'index.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
+<body>
+    <header>
+        <a href="#">
+            <span class="material-symbols-outlined"> menu </span>
+        </a>
+
+        <div class="search-container">
+            <input type="search" placeholder="Buscar notas">
+            <span class="material-symbols-outlined">search</span>
+        </div>
+
+        <a href="#">
+            <span class="material-symbols-outlined">
+                refresh
+            </span>
+        </a>
+    </header>
+    <div class="main-container">
+        <div class="form-container">
+            <form action="/add" method="post">
+                <h3>Agregar nota</h3>
+                <div class="input-group">
+                    <input type="text" id="title" name="title" class="note-title" placeholder="Titulo" required
+                        autocomplete="off">
+                    <input type="text" id="content" name="content" class="note-content" placeholder="Contenido" required
+                        autocomplete="off">
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="add-note">Agregar</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="notes-container">
+            {% for note in notes %}
+            <div class="note">
+                <span>{{ note[1] }}</span> <br>
+
+                    {% if note[3] == '1' %}
+                        <span class="done">{{ note[2] }}</span>
+                    {% else %}
+                        <span>{{ note[2] }}</span>
+                    {% endif %}
+                
+
+                <div class="buttons-container">
+                    <form action="/delete/{{ note[0] }}" method="get">
+                        <button type="submit" class="delete">
+                            <span class="material-symbols-outlined">
+                                delete
+                            </span>
+                        </button>
+                    </form>
+
+                    <form action="/done/{{ note[0] }}" method="get">
+                        <button class="edit" type="submit">
+                            <span class="material-symbols-outlined">
+                                done
+                            </span>
+                        </button>
+                    </form>
+                        
+
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>
